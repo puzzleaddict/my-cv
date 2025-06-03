@@ -48,27 +48,37 @@ const spaceTexture = textureLoader.load('src/space.jpg');
 scene.background = spaceTexture;
 const profileTexture = textureLoader.load('src/eye.jpg');
 const profileCube = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.MeshBasicMaterial({ map: profileTexture }));
-profileCube.position.set(20,0,0);
+profileCube.position.set(20, 0, 0);
 scene.add(profileCube);
 
 const moonTexture = textureLoader.load('src/moon.jpg');
 const normalTexture = textureLoader.load('src/normal.jpg');
 const moon = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
-  new THREE.MeshStandardMaterial({
-    map: moonTexture,
-    normalMap: normalTexture,
-  })
+  new THREE.MeshStandardMaterial({ map: moonTexture, normalMap: normalTexture })
 );
-moon.position.z = 30;
-moon.position.x = -10;
+moon.position.set(-10, 0, 30);
 scene.add(moon);
+
+const qrSurfaces = [
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-hello-world.png') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-hello-world.png') }),
+  new THREE.MeshBasicMaterial(),
+  new THREE.MeshBasicMaterial(),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-lorum-ipsum.png') }),
+  new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-lorum-ipsum.png') })
+];
+
+const qrCube = new THREE.Mesh(new THREE.BoxGeometry(10,10,10), qrSurfaces);
+qrCube.position.set(40, -30, 5);
+qrCube.rotation.set(-0.4, -1.2, -0.2);
+scene.add(qrCube);
 
 function moveCamera() {
   const top = document.body.getBoundingClientRect().top;
+
   profileCube.rotation.z = top * 0.005;
   profileCube.rotation.y = top * 0.0007;
-
   camera.position.z = top * -0.01;
   camera.position.x = top * -0.0002;
   camera.rotation.y = top * -0.02;
@@ -81,12 +91,11 @@ function animate() {
   torus.rotation.x += 0.01;
   torus.rotation.y += 0.03;
   torus.rotation.z += 0.08;
-
   moon.rotation.y += 0.0075;
   moon.rotation.z += 0.0075;
-
+  qrCube.rotateY(0.01);
+ 
   controls.update(); // doesn't seem to make a difference
-
   renderer.render(scene, camera);
 }
 
