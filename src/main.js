@@ -51,14 +51,20 @@ const profileCube = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.Mes
 profileCube.position.set(20, 0, 0);
 scene.add(profileCube);
 
-const moonTexture = textureLoader.load('src/moon.jpg');
-const normalTexture = textureLoader.load('src/normal.jpg');
-const moon = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 32, 32),
-  new THREE.MeshStandardMaterial({ map: moonTexture, normalMap: normalTexture })
-);
-moon.position.set(-10, 0, 30);
-scene.add(moon);
+function addBody(posX, posY, posZ, bodyFile, textureFile) {
+  const bodyTexture = textureLoader.load(bodyFile);
+  const normalTexture = textureFile === undefined ? null : textureLoader.load(textureFile);
+  const body = new THREE.Mesh(
+    new THREE.SphereGeometry(3, 32, 32),
+    new THREE.MeshStandardMaterial({ map: bodyTexture, normalMap: normalTexture })
+  );
+  body.position.set(posX, posY, posZ);
+  scene.add(body);
+  return body;
+}
+
+const moon = addBody(-10, 0, 30, 'src/moon.jpg', 'src/normal.jpg');
+const sun = addBody(10, -5, 70, 'src/1024px-Solarsystemscope_texture_2k_sun.jpg');
 
 const qrSurfaces = [
   new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-hello-world.png') }),
@@ -93,17 +99,11 @@ function animate() {
   torus.rotation.z += 0.08;
   moon.rotation.y += 0.0075;
   moon.rotation.z += 0.0075;
+  sun.rotation.y += 0.001;
   qrCube.rotateY(0.01);
- 
+
   controls.update(); // doesn't seem to make a difference
   renderer.render(scene, camera);
 }
 
 animate();
-
-/*
-Pro tip: if you change addStar() so that the geometry and material are initialised outside
-the loop and shared by all of them, it’ll be more efficient. Even more efficient, you can
-merge a bunch of geometries so you just have one mesh for all of the stars, and you save
-a bunch of draw calls and matrix math on the cpu.
- */

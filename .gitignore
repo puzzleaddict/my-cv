@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 /src/profile-pic.jpg
+/notes.txt
+/index-real.html
+/src/qr-linkedin.png
