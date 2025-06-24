@@ -66,16 +66,8 @@ function addBody(posX, posY, posZ, bodyFile, textureFile) {
 const moon = addBody(-10, 0, 30, 'src/moon.jpg', 'src/normal.jpg');
 const sun = addBody(10, -5, 70, 'src/1024px-Solarsystemscope_texture_2k_sun.jpg');
 
-const qrSurfaces = [
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-hello-world.png') }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-hello-world.png') }),
-  new THREE.MeshBasicMaterial(),
-  new THREE.MeshBasicMaterial(),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-lorum-ipsum.png') }),
-  new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-lorum-ipsum.png') })
-];
-
-const qrCube = new THREE.Mesh(new THREE.BoxGeometry(10,10,10), qrSurfaces);
+const qrTemp = new THREE.MeshBasicMaterial({ map: textureLoader.load('src/qr-hello-world.png') });
+const qrCube = new THREE.Mesh(new THREE.BoxGeometry(10,10,10), new Array(6).fill(qrTemp));
 qrCube.position.set(40, -30, 5);
 qrCube.rotation.set(-0.4, -1.2, -0.2);
 scene.add(qrCube);
